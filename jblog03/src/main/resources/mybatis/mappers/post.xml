@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="post">
+	<update id="updateCatNo" parameterType="categoryvo">
+	<![CDATA[
+	update post
+	set category_no = (select no from category where blog_id=#{blogId } and name='미분류')
+	where category_no = #{no }
+	]]>
+	</update>
+	
+</mapper>

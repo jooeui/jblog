@@ -14,7 +14,7 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 
 .center-content	{ width:500px; margin:120px auto 50px auto}
 
-.center-content .logo							{ width:163px; height:104px; background:url(/jblog/assets/images/logo.jpg) 0 0 no-repeat; margin:20px auto; text-indent:-100000px; font-size:0 }
+.center-content .logo							{ width:163px; height:104px; background:url(/jblog03//assets/images/logo.jpg) 0 0 no-repeat; margin:20px auto; text-indent:-100000px; font-size:0 }
 .center-content .menu							{ text-align:center; height:20px; margin:0 auto }
 .center-content .menu li						{ display:inline; padding-left:20px }
 .center-content .menu li a						{ font-size:1.2em }
@@ -30,6 +30,8 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 .login-form input, .login-form label			{ display:block }
 .login-form label								{ text-align:left; color:#555; margin-bottom:2px; font-weight:bold; }
 .login-form input[type='text']					{ margin-bottom:10px; width:230px; padding:5px }
+.login-form input[type='password']				{ margin-bottom:10px; width:230px; padding:5px }
+.login-form input[type="submit"]					{ display:block; width:80px; margin:20px auto }
 
 .join-form										{ text-align:left; width:250px; padding:10px; border:1px solid #bbb; }
 .join-form label, .join-form fieldset legend	{ color:#555; margin-bottom:2px; font-weight:bold; }
@@ -40,8 +42,8 @@ a:hover 		{ color:#dc143c; text-decoration:none; font-weight:bold; }
 
 .welcome-message								{ height: 200px }
 .welcome-message span							{ font-size:1.2em; font-weight:bold; color:#777 }
-.welcome-message span:before					{ content: url(/jblog/assets/images/bul1.gif);}
-.welcome-message span:after						{ content: url(/jblog/assets/images/bul2.gif);}		
+.welcome-message span:before					{ content: url(/jblog03/assets/images/bul1.gif);}
+.welcome-message span:after						{ content: url(/jblog03/assets/images/bul2.gif);}		
 
 
 
@@ -94,6 +96,7 @@ div#content .admin-cat					{ border:none; width:720px; margin-top:30px }
 
 .admin-cat								{ border:1px solid #777; border-collapse:collapse }
 .admin-cat th, .admin-cat td			{ border:1px solid #777; padding:6px }
+
 
 .n-c									{ margin-top:30px }
 #admin-cat-add							{ margin-top:10px }

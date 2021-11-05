@@ -12,16 +12,20 @@
 </head>
 <body>
 	<div class="center-content">
-		<h1 class="logo" style="background:url(${pageContext.request.contextPath}/assets/images/logo.jpg) 0 0 no-repeat">JBlog</h1>
-		<ul class="menu">
-			<li><a href="">로그인</a></li>
-			<li><a href="">회원가입</a></li>
-			<li><a href="">로그아웃</a></li>
-			<li><a href="">내블로그</a></li>
-		</ul>
-		<form class="login-form">
+		<c:import url="/WEB-INF/views/includes/header.jsp" />
+		
+		<c:choose>
+			<c:when test="${empty blogId }">
+				<c:set var="blogPath" value=""/>
+			</c:when>
+			<c:otherwise>
+				<c:set var="blogPath" value="/${blogId }"/>
+			</c:otherwise>
+		</c:choose>
+		
+		<form class="login-form" method="post" action="${pageContext.request.contextPath }/user/auth${blogPath }">
       		<label>아이디</label> <input type="text" name="id">
-      		<label>패스워드</label> <input type="text" name="password">
+      		<label>패스워드</label> <input type="password" name="password">
       		<input type="submit" value="로그인">
 		</form>
 	</div>

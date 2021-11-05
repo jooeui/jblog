@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="category">
+	<insert id="insertCategory" parameterType="string" >
+		<![CDATA[
+		insert into category values(null, '미분류', '카테고리를 지정하지 않은 경우', #{id })
+		]]>
+	</insert>
+	
+	<insert id="addCategory" parameterType="categoryvo" >
+		<![CDATA[
+		insert into category values(null, #{name }, #{desc }, #{blogId })
+		]]>
+	</insert>
+	
+	<select id="findCategoryList" parameterType="string" resultType="categoryvo">
+		<![CDATA[
+		select c.no, c.name, ifnull(p.post_count, 0) as postCount, 
+				if(c.`desc`='' || c.`desc`=null, '-', c.`desc`) as `desc`, c.blog_id as blogId 
+		from category c left join
+			(select category_no, count(*) as post_count
+			from post
+		    group by category_no) p
+		on c.no = p.category_no
+		where c.blog_id=#{id }
+		]]>
+	</select>
+	
+	<select id="findCategory" parameterType="categoryvo" resultType="categoryvo">
+	<![CDATA[
+	select no, name, `desc`, blog_id as blogId
+	from category
+	where blog_id = #{blogId }
+		and name = #{name }
+	]]>
+	</select>
+	
+	<delete id="delete" parameterType="categoryvo">
+	<![CDATA[
+	delete from category 
+	where blog_id=#{blogId } and no=#{no }
+	]]>
+	</delete>
+</mapper>
