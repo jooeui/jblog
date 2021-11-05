@@ -6,16 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.douzone.jblog.repository.CategoryRepository;
-import com.douzone.jblog.repository.PostRepository;
 import com.douzone.jblog.vo.CategoryVo;
 
 @Service
 public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
-	@Autowired
-	private PostRepository postRepository;
 
 	public List<CategoryVo> getCategoryList(String id) {
 		List<CategoryVo> list = categoryRepository.findCategoryList(id);
@@ -31,9 +27,6 @@ public class CategoryService {
 	}
 
 	public boolean delete(CategoryVo vo) {
-		if(vo.getPostCount() > 0) {
-			postRepository.updateCategoryNo(vo);
-		}
 		return categoryRepository.deleteCategory(vo);
 	}
 }

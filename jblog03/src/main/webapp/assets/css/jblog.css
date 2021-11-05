@@ -102,6 +102,9 @@ div#content .admin-cat					{ border:none; width:720px; margin-top:30px }
 #admin-cat-add							{ margin-top:10px }
 #admin-cat-add td.t						{ padding:5px 0; width:74px }
 #admin-cat-add td.s						{ padding:10px 0 }
+#admin-cat-add td p						{ float: right; margin-left: 5px; }
+#admin-cat-add td p.errmsg				{ color: red; }
+#admin-cat-add td p.successmsg			{ color: green; }
 
 .admin-cat-write td.t					{ padding:5px 0; width:40px }
 .admin-cat-write textarea				{ width:100%; height:200px }

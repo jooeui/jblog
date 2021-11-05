@@ -11,18 +11,23 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
 <script>
 window.onload = function() {
-	// 카테고리 추가
-	$("#btn-cat-add").click(function(){
-		var name = $("#name").val();
-		var desc = $("#desc").val();
+	var nameCheck = false;
+	var errMsg = "사용할 수 없는 카테고리입니다.";
+	
+	// 카테고리 입력 시 중복 있는지 바로 검사
+	$(document).on("focusout", "#name", function(){
+		nameCheck = false;
+		var name = $(this).val();
 		if(name == ''){
+			errMsg = "카테고리명은 필수입니다.";
+			$("#focusout-chk-name").text(errMsg).addClass("errmsg");
 			return;
 		}
-		console.log(name);
 		
 		$.ajax({
-			url: "${pageContext.request.contextPath }/category/api/checkName?name="+name+"&desc="+desc,
-			type: "get",
+			url: "${pageContext.request.contextPath }/category/api/checkName",
+			type: "post",
+			data: {name:name},
 			dataType: "json",
 			error: function(xhr, status, e) {
 				console.log(status, e);
@@ -34,17 +39,59 @@ window.onload = function() {
 					return;
 				}
 				if(response.data){
-					alert("이미 존재하는 카테고리입니다.");
+					errMsg = "이미 존재하는 카테고리명입니다.";
+					$("#focusout-chk-name").text(errMsg).addClass("errmsg");
+					return;
+				}
+				$("#focusout-chk-name").text("사용가능한 카테고리명입니다.").removeClass().addClass("successmsg");
+				nameCheck = true;
+			}
+		})
+	});
+	
+	// 카테고리 추가
+	// $("#btn-cat-add").click(function(){
+	$(document).on("click", "#btn-cat-add", function(){
+		var name = $("#name").val();
+		var desc = $("#desc").val();
+		/* if(name == ''){
+			alert("카테고리를 입력하세요.");
+			return;
+		} */
+		if(nameCheck == false){
+			alert(errMsg);
+			return;
+		}
+		console.log(name);
+		
+		$.ajax({
+			/* url: "${pageContext.request.contextPath }/category/api/checkName", */
+			url: "${pageContext.request.contextPath }/category/api/insert",
+			type: "post",
+			data: {name:name,
+				   desc:desc},
+			dataType: "json",
+			error: function(xhr, status, e) {
+				console.log(status, e);
+			},
+			success: function(response) {
+				console.log(response);
+				if(response.result != "success"){
+					console.error(response.message);
+					return;
+				}
+				/* if(response.data){
+					alert(errMsg);
 					$("#name")
 						.val("")
 						.focus();
 					return;
-				}
+				} */
 				
 				alert("카테고리가 추가되었습니다.");
 				$("#name").val("");
 				$("#desc").val("");
-				
+				$("#focusout-chk-name").removeClass().remove();
 				$(".admin-cat").load("${pageContext.request.contextPath }/${authUser.id}/admin/category .admin-cat");
 			}
 		})
@@ -69,8 +116,9 @@ window.onload = function() {
 		}
 		
 		$.ajax({
-			url: "${pageContext.request.contextPath }/category/api/delete/"+no+"?postcount="+postcount,
-			type: "get",
+			url: "${pageContext.request.contextPath }/category/api/delete/"+no,
+			type: "post",
+			data: {postcount:postcount},
 			dataType: "json",
 			error: function(xhr, status, e) {
 				console.log(status, e);
@@ -131,7 +179,10 @@ window.onload = function() {
 		      	<table id="admin-cat-add">
 		      		<tr>
 		      			<td class="t">카테고리명</td>
-		      			<td><input id="name" type="text" name="name"></td>
+		      			<td>
+		      				<input id="name" type="text" name="name">
+		      				<p id="focusout-chk-name"></p>
+		      			</td>
 		      		</tr>
 		      		<tr>
 		      			<td class="t">설명</td>

@@ -29,7 +29,7 @@
 	
 	<select id="findCategory" parameterType="categoryvo" resultType="categoryvo">
 	<![CDATA[
-	select no, name, `desc`, blog_id as blogId
+	select name
 	from category
 	where blog_id = #{blogId }
 		and name = #{name }

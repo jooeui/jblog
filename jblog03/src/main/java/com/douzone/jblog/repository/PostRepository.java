@@ -11,11 +11,9 @@ public class PostRepository {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public boolean updateCategoryNo(CategoryVo vo) {
-		int count = sqlSession.update("post.updateCatNo", vo);
-		return count == 1;
-	}
-
-	
+//	public boolean updateCategoryNo(CategoryVo vo) {
+//		int count = sqlSession.update("post.updateCatNo", vo);
+//		return count == 1;
+//	}
 	
 }
