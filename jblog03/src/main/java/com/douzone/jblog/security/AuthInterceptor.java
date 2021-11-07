@@ -64,8 +64,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		// 8-2. @Auth의 role이 ADMIN인 경우, authUser의 role이 ADMIN이어야 함
 		// authUser의 role이 ADMIN이 아닐 경우 권한 xxxxxx false 반환!!
 		String servletPath = request.getServletPath();
-
-		if(servletPath.indexOf("/"+authUser.getId()+"/") < 0) {
+		
+		
+		if(servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1)) == authUser.getId()) {
 			response.sendRedirect(request.getContextPath());
 			return false;
 		}

@@ -5,9 +5,80 @@
 	<update id="updateCatNo" parameterType="categoryvo">
 	<![CDATA[
 	update post
-	set category_no = (select no from category where blog_id=#{blogId } and name='미분류')
+	set category_no = (select no 
+					   from category 
+					   where blog_id = #{blogId } 
+					   	  and name = '미분류')
 	where category_no = #{no }
 	]]>
 	</update>
+
+	<delete id="deleteAll" parameterType="categoryvo">
+	<![CDATA[
+	delete from post where category_no = #{no }
+	]]>
+	</delete>
+	
+	<select id="findPostList" parameterType="map" resultType="postvo">
+	<choose>
+		<when test="categoryNo != 0 ">
+			<![CDATA[
+			select no, title, contents, date_format(reg_date, '%Y.%m.%d. %H:%i') as regDate, category_no as categoryNo
+			from post
+			where category_no = #{categoryNo }
+			order by reg_date desc
+			]]>
+		</when>
+		<otherwise>
+			<![CDATA[
+			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, 0 as categoryNo, c.blog_id as blogId
+			from post p, category c
+			where p.category_no = c.no
+				and c.blog_id = #{id }
+			order by reg_date desc
+			]]>
+		</otherwise>
+	</choose>
+	</select>
+	
+	<select id="findPost" parameterType="map" resultType="postvo">
+	<choose>
+		<when test="categoryNo == 0 and postNo == 0">
+			<![CDATA[
+			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo
+			from post p, category c
+			where p.category_no = c.no
+				and c.blog_id = #{id }
+			    and p.reg_date = (select max(reg_date)
+									from post);
+			]]>
+		</when>
+		<when test="categoryNo != 0 and postNo == 0">
+			<![CDATA[
+			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo
+			from post p, category c
+			where p.category_no = c.no
+				and c.blog_id = #{id }
+				and p.category_no = #{categoryNo }
+					and p.reg_date = (select max(reg_date)
+										from post
+									  where category_no = #{categoryNo })
+			]]>
+		</when>
+		<otherwise>
+			<![CDATA[
+			select no, title, contents, reg_date as regDate, category_no as categoryNo
+			from post
+			where no = #{postNo }
+			]]>
+		</otherwise>
+	</choose>
+	</select>
+	
+	<insert id="write" parameterType="postvo">
+	<![CDATA[
+	insert into post values(null, #{title }, #{contents }, now(), #{categoryNo })
+	]]>
+	</insert>
 	
 </mapper>

@@ -24,6 +24,7 @@
 		    group by category_no) p
 		on c.no = p.category_no
 		where c.blog_id=#{id }
+		order by c.no
 		]]>
 	</select>
 	

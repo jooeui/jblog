@@ -13,32 +13,32 @@
 window.onload = function() {
 	var nameCheck = false;
 	var errMsg = "사용할 수 없는 카테고리입니다.";
-	
+
 	// 카테고리 입력 시 중복 있는지 바로 검사
-	$(document).on("focusout", "#name", function(){
+	$(document).on("focusout", "#name", function() {
 		nameCheck = false;
 		var name = $(this).val();
-		if(name == ''){
+		if (name == '') {
 			errMsg = "카테고리명은 필수입니다.";
 			$("#focusout-chk-name").text(errMsg).addClass("errmsg");
 			return;
 		}
-		
+
 		$.ajax({
 			url: "${pageContext.request.contextPath }/category/api/checkName",
 			type: "post",
-			data: {name:name},
+			data: {name: name},
 			dataType: "json",
 			error: function(xhr, status, e) {
 				console.log(status, e);
 			},
 			success: function(response) {
 				console.log(response);
-				if(response.result != "success"){
+				if (response.result != "success") {
 					console.error(response.message);
 					return;
 				}
-				if(response.data){
+				if (response.data) {
 					errMsg = "이미 존재하는 카테고리명입니다.";
 					$("#focusout-chk-name").text(errMsg).addClass("errmsg");
 					return;
@@ -48,35 +48,37 @@ window.onload = function() {
 			}
 		})
 	});
-	
+
 	// 카테고리 추가
 	// $("#btn-cat-add").click(function(){
-	$(document).on("click", "#btn-cat-add", function(){
+	$(document).on("click", "#btn-cat-add", function() {
 		var name = $("#name").val();
 		var desc = $("#desc").val();
 		/* if(name == ''){
 			alert("카테고리를 입력하세요.");
 			return;
 		} */
-		if(nameCheck == false){
+		if (nameCheck == false) {
 			alert(errMsg);
 			return;
 		}
 		console.log(name);
-		
+
 		$.ajax({
 			/* url: "${pageContext.request.contextPath }/category/api/checkName", */
 			url: "${pageContext.request.contextPath }/category/api/insert",
 			type: "post",
-			data: {name:name,
-				   desc:desc},
+			data: {
+				name: name,
+				desc: desc
+			},
 			dataType: "json",
 			error: function(xhr, status, e) {
 				console.log(status, e);
 			},
 			success: function(response) {
 				console.log(response);
-				if(response.result != "success"){
+				if (response.result != "success") {
 					console.error(response.message);
 					return;
 				}
@@ -87,7 +89,7 @@ window.onload = function() {
 						.focus();
 					return;
 				} */
-				
+
 				alert("카테고리가 추가되었습니다.");
 				$("#name").val("");
 				$("#desc").val("");
@@ -96,41 +98,41 @@ window.onload = function() {
 			}
 		})
 	});
-	
+
 	// 카테고리 삭제
 	//$(".btn-cat-del").click(function(){
-	$(document).on("click", ".btn-cat-del", function(){
+	$(document).on("click", ".btn-cat-del", function() {
 		var no = $(this).nextAll(".del-cat-no").val();
 		var postcount = $(this).nextAll(".del-cat-postcount").val();
 		console.log(no);
 		console.log(postcount);
-		
-		if(postcount > 0){
-			if(!window.confirm("해당 카테고리에 속한 글이 모두 삭제됩니다.\n카테고리를 삭제하시겠습니까?")){
+
+		if (postcount > 0) {
+			if (!window.confirm("해당 카테고리에 속한 글이 모두 삭제됩니다.\n카테고리를 삭제하시겠습니까?")) {
 				return;
-			} 
+			}
 		} else {
-			if(!window.confirm("카테고리를 삭제하시겠습니까?")){
+			if (!window.confirm("카테고리를 삭제하시겠습니까?")) {
 				return;
-			} 
+			}
 		}
-		
+
 		$.ajax({
-			url: "${pageContext.request.contextPath }/category/api/delete/"+no,
+			url: "${pageContext.request.contextPath }/category/api/delete/" + no,
 			type: "post",
-			data: {postcount:postcount},
+			data: {postcount: postcount},
 			dataType: "json",
 			error: function(xhr, status, e) {
 				console.log(status, e);
 			},
 			success: function(response) {
 				console.log(response);
-				
-				if(response.result != "success") {
+
+				if (response.result != "success") {
 					console.error(response.message);
 					return;
 				}
-				
+
 				alert("카테고리가 삭제되었습니다.");
 
 				$(".admin-cat").load("${pageContext.request.contextPath }/${authUser.id}/admin/category .admin-cat");

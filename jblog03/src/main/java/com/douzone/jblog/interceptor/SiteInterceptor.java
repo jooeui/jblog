@@ -7,14 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.douzone.jblog.service.BlogService;
-import com.douzone.jblog.service.UserService;
 import com.douzone.jblog.vo.BlogVo;
-import com.douzone.jblog.vo.UserVo;
 
 public class SiteInterceptor extends HandlerInterceptorAdapter {
-	@Autowired
-	private UserService userService;
-
 	@Autowired
 	private BlogService blogService;
 	
@@ -22,16 +17,21 @@ public class SiteInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		String servletPath = request.getServletPath();
-		String lastServletPath = servletPath.substring(servletPath.lastIndexOf("/")+1);
-		UserVo userVo = userService.getUser(lastServletPath);
-		String idCheck = userVo.getId();
-
-		if(idCheck != null || !("".equals(idCheck))) {
-			BlogVo blog = (BlogVo) request.getServletContext().getAttribute("blogVo");
-			if(blog == null || idCheck != blog.getId()) {
-				blog = blogService.getBlogInfo(idCheck);
-				request.getServletContext().setAttribute("blogVo", blog);
-			}
+		String pathId = "";
+		System.out.println(servletPath);
+		if(servletPath == "/") {
+			return true;
+		}
+		if(servletPath.indexOf("/", 1) < 0) {
+			pathId = servletPath.substring(servletPath.indexOf("/", 0)+1);
+		} else {
+			pathId = servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1));
+		}
+		System.out.println(pathId);
+		BlogVo blog = (BlogVo) request.getServletContext().getAttribute("blogVo");
+		if(blog == null || !(pathId.equals(blog.getId()))) {
+			blog = blogService.getBlogInfo(pathId);
+			request.getServletContext().setAttribute("blogVo", blog);
 		}
 		
 		return true;

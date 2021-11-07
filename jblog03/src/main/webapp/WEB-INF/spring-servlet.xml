@@ -46,6 +46,10 @@
 	<!-- Interceptors -->
 	<mvc:interceptors>
 		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.douzone.jblog.interceptor.SiteInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/user/auth/**" />
 			<bean class="com.douzone.jblog.security.LoginInterceptor" />
 		</mvc:interceptor>

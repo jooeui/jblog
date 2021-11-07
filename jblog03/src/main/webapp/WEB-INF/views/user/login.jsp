@@ -26,6 +26,12 @@
 		<form class="login-form" method="post" action="${pageContext.request.contextPath }/user/auth${blogPath }">
       		<label>아이디</label> <input type="text" name="id">
       		<label>패스워드</label> <input type="password" name="password">
+      		<c:if test='${result == "fail" }'>
+				<p class="errmsg">
+					아이디 또는 비밀번호가 잘못 입력 되었습니다.<br/>
+					아이디와 비밀번호를 정확히 입력해 주세요.
+				</p>
+			</c:if>
       		<input type="submit" value="로그인">
 		</form>
 	</div>
