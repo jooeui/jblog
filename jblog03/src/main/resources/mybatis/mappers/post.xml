@@ -19,11 +19,17 @@
 	]]>
 	</delete>
 	
+	<delete id="delete" parameterType="long">
+	<![CDATA[
+	delete from post where no = #{no }
+	]]>
+	</delete>
+	
 	<select id="findPostList" parameterType="map" resultType="postvo">
 	<choose>
 		<when test="categoryNo != 0">
 			<![CDATA[
-			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, 0 as categoryNo, c.blog_id as blogId
+			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, p.category_no as categoryNo, c.name as categoryName, c.blog_id as blogId
 			from post p, category c
 			where p.category_no = c.no
 				and c.blog_id = #{id }
@@ -33,7 +39,7 @@
 		</when>
 		<otherwise>
 			<![CDATA[
-			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, 0 as categoryNo, c.blog_id as blogId
+			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, 0 as categoryNo, '전체보기' as categoryName, c.blog_id as blogId
 			from post p, category c
 			where p.category_no = c.no
 				and c.blog_id = #{id }

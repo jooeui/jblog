@@ -71,14 +71,19 @@ div#container		{ text-align:left }
 
 
 /* content */
-div#content	.blog-content	{ padding:10px }
-.blog-content h4			{ font-size:1.3em; color:#9D96D0 }
-.blog-content p				{ margin-top:10px; line-height:150% }
-div#content .blog-list		{ margin:20px 0 10px 10px }
-.blog-list 					{ width:100% }
-.blog-list li				{ height:20px; clear:both; }
-.blog-list li a				{ display:block; float:left }
-.blog-list li span			{ display:block; float:right; margin-right:30px }
+div#content	.blog-content				{ padding: 10px 10px 30px; overflow: hidden; }
+.blog-content h4.post-title				{ font-size:1.8em; color:#9D96D0; padding: 20px 5px 15px; border-bottom: 1px solid #ddd; }
+.blog-content p.post-contents			{ padding: 5px 5px 60px; }
+.blog-content p							{ margin-top:10px; line-height:150% }
+.blog-content a.btn-cat-del				{ float: right; border: 1px solid #aaa; padding: 5px; margin: 0 3px; }
+div#content .blog-post-list 			{ margin:20px 10px 10px }
+.blog-post-list .category-info			{ padding: 2px 0 8px; }
+/* div#content .blog-list				{ margin:20px 10px 10px } */
+.blog-list li							{ height:20px; line-height: 20px; clear:both; padding: 8px 0; border-bottom: 1px solid #ddd; }
+.blog-list li.list-head					{ border-bottom: 1px solid #333; }
+.blog-list li a							{ display:block; float:left;  }
+.blog-list li:not(.list-head) span		{ display:block; float:right;}
+.blog-list li.list-head span:nth-child(2){ display:block; float:right;}
 
 /* admin content */
 div#content .admin-menu					{ height:20px; margin-top:15px; margin-bottom:10px }

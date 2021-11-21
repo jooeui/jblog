@@ -15,25 +15,45 @@
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp" />
 		<div id="wrapper">
 			<div id="content">
+				<div class="blog-post-list">
+					<c:if test="${not empty infoMap.postVo }">
+						<div class="category-info">
+							<a href="${pageContext.request.contextPath}/${blogVo.id }/${infoMap.currentCategory.no }">${infoMap.currentCategory.name }</a>
+							<span>${infoMap.currentCategory.postCount }개의 글</span>
+						</div>
+						<ul class="blog-list">
+							<li class="list-head">
+								<span>글제목</span>
+								<span>작성일</span>
+							</li>
+							<c:forEach items="${infoMap.postList }" var="postList" varStatus="status">
+								<li>
+									<a href="${pageContext.request.contextPath}/${blogVo.id }/${postList.categoryNo }/${postList.no}">${postList.title }</a>
+									<span>${postList.regDate}</span>
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+				</div>
 				<div class="blog-content">
 					<c:choose>
 						<c:when test="${empty infoMap.postVo }">
 							<p><strong>아직 작성된 글이 없습니다.</strong><p>
 						</c:when>
 						<c:otherwise>
-							<h4>${infoMap.postVo.title }</h4>
-							<p>${infoMap.postVo.contents }<p>
+							<h4 class="post-title">${infoMap.postVo.title }</h4>
+							<p class="post-contents">${infoMap.postVo.contents }</p>
+							<c:if test="${authUser.id eq blogVo.id}">
+								<a class="btn-cat-del" href="${pageContext.request.contextPath}/${blogVo.id }/post/delete/${infoMap.postVo.no}">
+									삭제하기
+								</a>
+								<a class="btn-cat-del" href="${pageContext.request.contextPath}/${blogVo.id }/post/update/${infoMap.postVo.no}">
+									수정하기
+								</a>
+							</c:if>
 						</c:otherwise>
 					</c:choose>
 				</div>
-				<ul class="blog-list">
-					<c:forEach items="${infoMap.postList }" var="postList" varStatus="status">
-						<li>
-							<a href="${pageContext.request.contextPath}/${blogVo.id }/${postList.categoryNo }/${postList.no}">${postList.title }</a>
-							<span>${postList.regDate}</span>
-						</li>
-					</c:forEach>
-				</ul>
 			</div>
 		</div>
 
@@ -47,7 +67,7 @@
 			<h2>카테고리</h2>
 			<ul>
 				<c:choose>
-					<c:when test="${infoMap.currentCatNo == 0 }">
+					<c:when test="${infoMap.currentCategory.no == 0 }">
 						<li class="selected"><a href="${pageContext.request.contextPath }/${blogVo.id }">전체보기</a></li>
 					</c:when>
 					<c:otherwise>
@@ -57,7 +77,7 @@
 				
 				<c:forEach items="${infoMap.categoryList }" var="categoryList" varStatus="status">
 					<c:choose>
-						<c:when test="${categoryList.no == infoMap.currentCatNo }">
+						<c:when test="${categoryList.no == infoMap.currentCategory.no}">
 							<li class="selected"><a href="${pageContext.request.contextPath}/${blogVo.id }/${categoryList.no }">${categoryList.name }</a></li>
 						</c:when>
 						<c:otherwise>

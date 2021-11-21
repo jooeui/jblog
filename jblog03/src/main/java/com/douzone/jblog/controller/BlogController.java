@@ -68,16 +68,23 @@ public class BlogController {
 		
 		Map<String, Object> infoMap = blogService.getBlogInfoAndPost(map);
 		
+		System.out.println(infoMap);
+		
 		model.addAttribute("infoMap", infoMap);
 		
 		return "blog/blog-main";
 	}
 	
 	@Auth
+	@RequestMapping(value="/post/delete/{no}")
+	public String deletePost(@PathVariable("id") String id, @PathVariable("no") Long no) {
+		postService.deletePost(no);
+		return "redirect:/" + id;
+	}
+	
+	@Auth
 	@RequestMapping("/admin/basic")
-	public String updateBlog(@PathVariable("id") String id, Model model) {
-		BlogVo blogVo = blogService.getBlogInfo(id);
-		model.addAttribute("blogVo", blogVo);
+	public String updateBlog() {
 		return "blog/blog-admin-basic";
 	}
 	
@@ -104,17 +111,6 @@ public class BlogController {
 	public String category(@PathVariable("id") String id) {
 		return "blog/blog-admin-category";
 	}
-	
-//	@Auth(role="ADMIN")
-//	@RequestMapping("/admin/category/delete/{no}")
-//	public String category(
-//			@PathVariable("id") String id,
-//			@PathVariable("no") String no,
-//			Model model) {
-//		List<CategoryVo> categoryVo = categoryService.getCategoryList(id);
-//		model.addAttribute("categoryVo", categoryVo);
-//		return "blog/blog-admin-category";
-//	}
 	
 	@Auth
 	@RequestMapping("/admin/write")

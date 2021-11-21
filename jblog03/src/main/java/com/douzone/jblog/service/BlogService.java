@@ -39,24 +39,26 @@ public class BlogService {
 		if(!map.containsKey("categoryNo")) {
 			map.put("categoryNo", 0);
 		}
+		System.out.println(map);
 		
 		// 카테고리 리스트
 		List<CategoryVo> categoryList = categoryRepository.findCategoryList((String)map.get("id"));
+		
+		// 현재 카테고리
+		CategoryVo currentCategory = categoryRepository.currentCategoryInfo(map);
 		
 		// 포스트 리스트
 		List<PostVo> postList = postRepository.findPostList(map);
 		
 		// 최신글
 		PostVo postVo = postRepository.findPost(map);
-		
-		// System.out.println(categoryList.get(0).getBlogId());
-		// System.out.println(map.get("id"));
 		if(!map.get("id").equals(categoryList.get(0).getBlogId())) {
 			throw new NotFoundException();
 		}
 		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("currentCatNo", map.get("categoryNo"));
+//		resultMap.put("currentCatNo", map.get("categoryNo"));
 		resultMap.put("categoryList", categoryList);
+		resultMap.put("currentCategory", currentCategory);
 		resultMap.put("postList", postList);
 		resultMap.put("postVo", postVo);
  		

@@ -15,4 +15,8 @@ public class PostService {
 //		System.out.println("Service =============== " + postVo);
 		postRepository.write(postVo);
 	}
+	
+	public void deletePost(Long no) {
+		postRepository.delete(no);
+	}
 }

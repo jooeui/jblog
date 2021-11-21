@@ -1,6 +1,7 @@
 package com.douzone.jblog.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ public class CategoryRepository {
 
 	public CategoryVo findCategory(CategoryVo vo) {
 		return sqlSession.selectOne("category.findCategory", vo);
+	}
+	
+	public CategoryVo currentCategoryInfo(Map<String, Object> map) {
+		return sqlSession.selectOne("category.currentCategoryInfo", map);
 	}
 
 	public boolean deleteCategory(CategoryVo vo) {

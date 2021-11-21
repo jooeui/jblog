@@ -40,6 +40,32 @@
 	]]>
 	</select>
 	
+	<select id="currentCategoryInfo" parameterType="map" resultType="categoryvo">
+		<choose>
+			<when test="categoryNo != 0">
+				<![CDATA[
+				select c.no, c.name, ifnull(p.post_count, 0) as postCount, c.blog_id as blogId 
+				from category c left join
+					(select category_no, count(*) as post_count
+					from post
+				    group by category_no) p
+				on c.no = p.category_no
+				where c.blog_id=#{id }
+					and c.no = #{categoryNo }
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				select 0 as no, '전체보기' as name, p.post_count as postCount, p.blog_id as blogId
+				from (select count(*) as post_count, c.blog_id
+						from post p, category c
+						where c.no = p.category_no
+							and c.blog_id = #{id}) p
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+	
 	<delete id="delete" parameterType="categoryvo">
 	<![CDATA[
 	delete from category 
