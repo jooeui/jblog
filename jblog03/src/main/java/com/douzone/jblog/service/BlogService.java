@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.douzone.jblog.exception.NotFoundException;
 import com.douzone.jblog.repository.BlogRepository;
 import com.douzone.jblog.repository.CategoryRepository;
 import com.douzone.jblog.repository.PostRepository;
@@ -29,9 +30,7 @@ public class BlogService {
 		return blogRepository.getBlogInfo(id);
 	}
 	
-	public Map<String, Object> getBlogInfoAndPost(Map<String, Object> map) {
-//		System.out.println("========= Service로 넘어온 map1 =========");
-//		System.out.println(map);
+	public Map<String, Object> getBlogInfoAndPost(Map<String, Object> map){
 
 		if(!map.containsKey("postNo")) {
 			map.put("postNo", 0);
@@ -40,12 +39,6 @@ public class BlogService {
 		if(!map.containsKey("categoryNo")) {
 			map.put("categoryNo", 0);
 		}
-		
-//		System.out.println("========= Service로 넘어온 map2 =========");
-//		System.out.println(map);
-		
-		// 블로그 정보(title, logo)
-//		BlogVo blogVo = blogRepository.getBlogInfo((String)map.get("id"));
 		
 		// 카테고리 리스트
 		List<CategoryVo> categoryList = categoryRepository.findCategoryList((String)map.get("id"));
@@ -56,14 +49,13 @@ public class BlogService {
 		// 최신글
 		PostVo postVo = postRepository.findPost(map);
 		
-//		System.out.println("=========service=========");
-//		System.out.println(categoryList);
-//		System.out.println(postList);
-//		System.out.println(postVo);
-
+		// System.out.println(categoryList.get(0).getBlogId());
+		// System.out.println(map.get("id"));
+		if(!map.get("id").equals(categoryList.get(0).getBlogId())) {
+			throw new NotFoundException();
+		}
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("currentCatNo", map.get("categoryNo"));
-//		resultMap.put("blogVo", blogVo);
 		resultMap.put("categoryList", categoryList);
 		resultMap.put("postList", postList);
 		resultMap.put("postVo", postVo);

@@ -28,12 +28,13 @@ public class CategoryService {
 
 	public void addCategory(CategoryVo vo) {
 		categoryRepository.addCategory(vo);
+		System.out.println(vo);
 	}
 
-	public boolean delete(CategoryVo vo) {
-		boolean chk1 = postRepository.deleteAllPost(vo);
-		boolean chk2 = categoryRepository.deleteCategory(vo);
-		
-		return chk1 && chk2;
+	public void delete(CategoryVo vo) {
+		if(vo.getPostCount() > 0) {
+			postRepository.deleteAllPost(vo);
+		}
+		categoryRepository.deleteCategory(vo);
 	}
 }

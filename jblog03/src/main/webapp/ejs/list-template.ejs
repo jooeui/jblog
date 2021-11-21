@@ -1,0 +1,21 @@
+<tbody>
+<%
+	for(var i = 0; i < data.length; i++) {
+		
+		var vo = data[i];
+%>
+			<tr data-no="<%=vo.no %>">
+				<td><%=(i+1) %></td>
+				<td><%=vo.name %></td>
+				<td><%=vo.postCount %></td>
+				<td><%=vo.desc %></td>
+				<td>
+					<% if('미분류' != vo.name) { %>
+						<img class="btn-cat-del" src="<%=path %>/assets/images/delete.jpg" alt="삭제" data-no="<%=vo.no %>" data-count="<%=vo.postCount %>">
+					<% } %> 
+				</td>
+			</tr>
+<%
+	}
+%>
+</tbody>

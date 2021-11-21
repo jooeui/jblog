@@ -21,11 +21,13 @@
 	
 	<select id="findPostList" parameterType="map" resultType="postvo">
 	<choose>
-		<when test="categoryNo != 0 ">
+		<when test="categoryNo != 0">
 			<![CDATA[
-			select no, title, contents, date_format(reg_date, '%Y.%m.%d. %H:%i') as regDate, category_no as categoryNo
-			from post
-			where category_no = #{categoryNo }
+			select p.no, p.title, p.contents, date_format(p.reg_date, '%Y.%m.%d. %H:%i') as regDate, 0 as categoryNo, c.blog_id as blogId
+			from post p, category c
+			where p.category_no = c.no
+				and c.blog_id = #{id }
+				and p.category_no = #{categoryNo }
 			order by reg_date desc
 			]]>
 		</when>
@@ -45,7 +47,7 @@
 	<choose>
 		<when test="categoryNo == 0 and postNo == 0">
 			<![CDATA[
-			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo
+			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo, c.blog_id as blogId
 			from post p, category c
 			where p.category_no = c.no
 				and c.blog_id = #{id }
@@ -55,7 +57,7 @@
 		</when>
 		<when test="categoryNo != 0 and postNo == 0">
 			<![CDATA[
-			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo
+			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo, c.blog_id as blogId
 			from post p, category c
 			where p.category_no = c.no
 				and c.blog_id = #{id }
@@ -67,9 +69,11 @@
 		</when>
 		<otherwise>
 			<![CDATA[
-			select no, title, contents, reg_date as regDate, category_no as categoryNo
-			from post
-			where no = #{postNo }
+			select p.no, p.title, p.contents, p.reg_date as regDate, p.category_no as categoryNo, c.blog_id as blogId
+			from post p, category c
+			where p.category_no = c.no
+				and c.blog_id = #{id }
+				and p.no = #{postNo }
 			]]>
 		</otherwise>
 	</choose>

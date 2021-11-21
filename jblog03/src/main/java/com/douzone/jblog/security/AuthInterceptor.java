@@ -51,23 +51,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 		
-		// 7. 권한(Authorization) 체크를 위해서 @Auth의 role 가져오기("USER", "ADMIN")
-		String role = auth.role();
-		
-		// 8. 권한 체크
-		// 		과제....................................................
-		// 8-1. @Auth의 role이 USER인 경우, authUser의 role 상관 x
-		if("USER".equals(role)) {
-			return true;
-		}
-		
 		// 8-2. @Auth의 role이 ADMIN인 경우, authUser의 role이 ADMIN이어야 함
 		// authUser의 role이 ADMIN이 아닐 경우 권한 xxxxxx false 반환!!
 		String servletPath = request.getServletPath();
 		
 		
-		if(servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1)) == authUser.getId()) {
-			response.sendRedirect(request.getContextPath());
+		if(!(authUser.getId()).equals(servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1)))) {
+			response.sendRedirect(request.getContextPath() + "/" + servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1)));
 			return false;
 		}
 		

@@ -18,7 +18,7 @@ public class SiteInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		String servletPath = request.getServletPath();
 		String pathId = "";
-		System.out.println(servletPath);
+//		System.out.println(servletPath);
 		if(servletPath == "/") {
 			return true;
 		}
@@ -27,7 +27,7 @@ public class SiteInterceptor extends HandlerInterceptorAdapter {
 		} else {
 			pathId = servletPath.substring(servletPath.indexOf("/", 0)+1, servletPath.indexOf("/", 1));
 		}
-		System.out.println(pathId);
+//		System.out.println(pathId);
 		BlogVo blog = (BlogVo) request.getServletContext().getAttribute("blogVo");
 		if(blog == null || !(pathId.equals(blog.getId()))) {
 			blog = blogService.getBlogInfo(pathId);

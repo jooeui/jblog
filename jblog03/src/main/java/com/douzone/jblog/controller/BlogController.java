@@ -32,7 +32,7 @@ import com.douzone.jblog.vo.CategoryVo;
 import com.douzone.jblog.vo.PostVo;
 
 @Controller
-@RequestMapping({"/{id:(?!assets|images).*}"})
+@RequestMapping({"/{id:(?!assets|images|ejs).*}"})
 public class BlogController {
 	private static final Log LOGGER = LogFactory.getLog(BlogController.class);
 	
@@ -60,27 +60,20 @@ public class BlogController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		if(categoryNo.isPresent()) {
-//			System.out.println("[넘어온 categoryNo] " + categoryNo.get());
 			map.put("categoryNo", categoryNo.get());
 		}
 		if(postNo.isPresent()) {
-//			System.out.println("[넘어온 postNo] " + postNo.get());
 			map.put("postNo", postNo.get());
 		}
+		
 		Map<String, Object> infoMap = blogService.getBlogInfoAndPost(map);
-//		System.out.println("==========controller==========");
-//		System.out.println(infoMap);
-//		System.out.println("[category list]\n" + infoMap.get("categoryList"));
-//		BlogVo blogVo = blogService.getBlogInfo(id);
-//		if(infoMap.get("blogVo") == null) {
-//			return "redirect:/";
-//		}
+		
 		model.addAttribute("infoMap", infoMap);
 		
 		return "blog/blog-main";
 	}
 	
-	@Auth(role="ADMIN")
+	@Auth
 	@RequestMapping("/admin/basic")
 	public String updateBlog(@PathVariable("id") String id, Model model) {
 		BlogVo blogVo = blogService.getBlogInfo(id);
@@ -88,7 +81,7 @@ public class BlogController {
 		return "blog/blog-admin-basic";
 	}
 	
-	@Auth(role="ADMIN")
+	@Auth
 	@RequestMapping(value="/admin/update", method=RequestMethod.POST)
 	public String updateBlog(
 			@PathVariable("id") String id,
@@ -106,26 +99,24 @@ public class BlogController {
 		return "redirect:/" + id + "/admin/basic";
 	}
 	
-	@Auth(role="ADMIN")
+	@Auth
 	@RequestMapping("/admin/category")
-	public String category(@PathVariable("id") String id, Model model) {
-		List<CategoryVo> categoryVo = categoryService.getCategoryList(id);
-		model.addAttribute("categoryVo", categoryVo);
+	public String category(@PathVariable("id") String id) {
 		return "blog/blog-admin-category";
 	}
 	
-	@Auth(role="ADMIN")
-	@RequestMapping("/admin/category/delete/{no}")
-	public String category(
-			@PathVariable("id") String id,
-			@PathVariable("no") String no,
-			Model model) {
-		List<CategoryVo> categoryVo = categoryService.getCategoryList(id);
-		model.addAttribute("categoryVo", categoryVo);
-		return "blog/blog-admin-category";
-	}
+//	@Auth(role="ADMIN")
+//	@RequestMapping("/admin/category/delete/{no}")
+//	public String category(
+//			@PathVariable("id") String id,
+//			@PathVariable("no") String no,
+//			Model model) {
+//		List<CategoryVo> categoryVo = categoryService.getCategoryList(id);
+//		model.addAttribute("categoryVo", categoryVo);
+//		return "blog/blog-admin-category";
+//	}
 	
-	@Auth(role="ADMIN")
+	@Auth
 	@RequestMapping("/admin/write")
 	public String write(@PathVariable("id") String id, @ModelAttribute PostVo postVo, Model model) {
 		List<CategoryVo> categoryList = categoryService.getCategoryList(id);
@@ -133,7 +124,7 @@ public class BlogController {
 		return "blog/blog-admin-write";
 	}
 
-	@Auth(role="ADMIN")
+	@Auth
 	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
 	public String write(@PathVariable("id") String id, @ModelAttribute @Valid PostVo postVo, BindingResult result, Model model) {
 		if(result.hasErrors()) {
